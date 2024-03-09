@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{%  load static %}
+
+{% block title %} Pizzeria-Speisekarte {% endblock title %}
+
+{% block header %}
+    <h1>Pizzeria dall'informatico</h1>
+
+    <div class="pizzaleiste">
+        <div class="card-body">
+            <img src="{% static 'images/hawaii_10.20.jpeg' %}" width="800" height="100">
+        </div>
+    </div>
+    <br>
+    <h2>Willkommen bei der Pizzeria dall'informatico</h2>
+{% endblock header %}
+
+{% block content %}
+        {% for pizza in pizzas %}
+            <li>
+                <figure>
+                    <img src="{% static 'images/'|add:pizza.picture %}" alt="{{ pizza.name }}" width="250" height="100"/>
+                    <figcaption>{{ pizza.name }}</figcaption>
+                    <figcaption>Preis: €{{ pizza.price }}</figcaption>
+                    <input class="quantity" id="{{ pizza.name }}" type="number" name="{{ pizza.name }}" placeholder="0"
+                        data-price={{ pizza.price }}>
+                </figure>
+            </li>
+        {% endfor %}
+        <button id="submitbutton">Zu Kundendaten</button>
+    <script>
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Check if the cookie name matches
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        document.getElementById("submitbutton").addEventListener("click", function () {
+            var inputElements = Array.from(document.getElementsByClassName("quantity"));
+            var order = [];
+            var gesamtsumme = 0;
+
+            inputElements.forEach(function (input) {
+                if (!isNaN(input.value) && input.value !== "") {
+                    order.push({pizza: input.name, quantity: input.value});
+                    gesamtsumme += input.value * parseFloat(input.dataset.price);
+                }
+            });
+
+            var bestellangabe = order.map(function (obj) {
+                return obj.quantity + ' x ' + obj.pizza;
+            }).join(', ');
+
+            var data = {
+                bestellangabe: bestellangabe,
+                gesamtsumme: gesamtsumme,
+                mwst: gesamtsumme * 0.07
+            };
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '{% url "kundendaten" %}');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+            xhr.send(JSON.stringify(data));
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    window.location.href = '{% url "kundendaten" %}';
+                }
+            }
+        });
+    </script>
+{% endblock content %}
+

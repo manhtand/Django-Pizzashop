@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Pizzeria-Bestellliste {% endblock title %}
+
+{% block header %}
+    <h1>Pizzeria dall'informatico</h1>
+    <a class="action" href="#">Neue Bestellung</a>
+{% endblock header %}
+
+{% block content %}
+    <h1>Pizza-Bestellungen</h1>
+    {% for bestellung in object_list %}
+        <article>
+            <a href="#">{{ bestellung.bestellangabe }}</a>
+            Kunde: {{ bestellung.kunde }} Datum: {{ bestellung.created_at }}
+            <hr>
+        </article>
+        <a href="#">Editieren</a> | <a href="#">Löschen</a>
+        {% if not forloop.last %}
+            <hr>
+        {% endif %}
+    {% endfor %}
+{% endblock content %}

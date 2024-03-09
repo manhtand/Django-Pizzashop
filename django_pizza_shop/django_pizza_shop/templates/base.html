@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0,
+        maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load static %}
+    {% block css %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% endblock css %}
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body class="bg-yellow">
+    <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'speisekarte' %}">Speisekarte</a></li>
+        <li><a href="{% url 'kundendaten' %}">Eingabe Kundendaten</a></li>
+        <li><a href="{% url 'bestellung_list' %}">Anzeige Bestellungen</a></li>
+    </ul>
+    <main>
+        {% block header %}
+        {% endblock header%}
+
+        {% block content %}
+        {% endblock content %}
+    </main>
+
+    {% block javascript %}
+    {% endblock javascript %}
+</body>
+</html>

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Meine Pizzeria {% endblock title %}
+
+{% block header %}
+    <h1>Pizzeria dall'informatico</h1>
+
+    <div class="pizzaleiste">
+        <div class="card-body">
+            <img src="{% static 'images/hawaii_10.20.jpeg' %}" width="800" height="100">
+        </div>
+    </div>
+    <br>
+    <h2>Willkommen bei der Pizzeria dall'informatico</h2>
+{% endblock header %}
+
+{% block content %}
+    Hier finden nicht nur Informatiker leckere Pizzen.
+    <h4>Bestellen Sie unsere traditionelle Pizzen
+    <br>
+    aus dem Holzbackofen!
+    <br>
+    Sie werden nicht enttäuscht sein.</h4>
+    <br>
+    Hier geht es zu unserer <a href="{% url 'speisekarte' %}">Speisekarte</a>.
+{% endblock content %}
